@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grpc-server
+spec:
+  selector:
+    matchLabels:
+      app: grpc-server
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: grpc-server
+    spec:
+      containers:
+      - name: grpc-server
+        image: swapnildahiphale/grpc-server
+        ports:
+        - containerPort: 10000
+          name: grpc
+          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grpc-server
+  namespace: default
+spec:
+  selector:
+    app: grpc-server
+  ports:
+  - port: 10000
+    targetPort: 10000
+    name: grpc
+    protocol: TCP
+
